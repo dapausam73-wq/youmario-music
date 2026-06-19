@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Youmario Music</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+<header class="site-header">
+    <a class="brand" href="/">
+        <span class="brand-icon">♪</span>
+        <span>
+            <strong>Youmario</strong>
+            <small>Music</small>
+        </span>
+    </a>
+
+    <nav class="main-nav">
+        <a href="#inicio">Inicio</a>
+        <a href="#biblioteca">Musicas</a>
+        <a href="#youtube">Videos</a>
+        <a href="#top">Top Charts</a>
+        <a href="#footer">Sobre</a>
+    </nav>
+
+    <a class="login-btn" href="/admin/dashboard">Entrar</a>
+</header>
+
+<main>
+    <section class="hero" id="inicio">
+        <div class="hero-art"></div>
+        <div class="hero-content">
+            <div class="hero-logo">
+                <span>Youmario</span>
+                <strong>Music</strong>
+            </div>
+            <p>Ouça, assista e faça download das suas musicas e videos favoritos.</p>
+
+            <form class="search-box" id="youtube-form">
+                <input id="youtube-query" type="search" placeholder="Pesquisar musicas, artistas ou videos..." autocomplete="off" required>
+                <button type="submit" aria-label="Pesquisar">⌕</button>
+            </form>
+
+            <div class="mode-switch">
+                <a class="active" href="#biblioteca">♫ Musicas</a>
+                <a href="#youtube">▶ Videos</a>
+            </div>
+
+            <p class="status" id="youtube-status">Pronto para pesquisar.</p>
+        </div>
+    </section>
+
+    <section class="content-section" id="biblioteca">
+        <div class="chips" id="genre-chips">
+            <button class="active" type="button" data-filter="todos">Todos</button>
+            <% [...new Set(musicas.map(m => m.genero).filter(Boolean))].slice(0, 7).forEach(genero => { %>
+                <button type="button" data-filter="<%= genero.toLowerCase() %>"><%= genero %></button>
+            <% }) %>
+        </div>
+
+        <div class="section-head">
+            <h2><span>♫</span> Musicas</h2>
+            <input class="mini-search" id="library-search" type="search" placeholder="Filtrar...">
+        </div>
+
+        <div class="track-list">
+            <% if (musicas.length === 0) { %>
+                <div class="empty-state">
+                    <h3>Nenhuma musica carregada</h3>
+                    <p>Entra no painel admin para adicionar a primeira musica.</p>
+                </div>
+            <% } %>
+
+            <% musicas.forEach(musica => { %>
+                <article class="track-row"
+                    data-title="<%= musica.titulo %>"
+                    data-artist="<%= musica.artista %>"
+                    data-genre="<%= (musica.genero || '').toLowerCase() %>"
+                    data-audio="/uploads/musicas/<%= musica.ficheiro %>">
+                    <button class="cover play-btn" type="button" aria-label="Tocar musica">
+                        <img src="<%= musica.capa ? '/uploads/capas/' + musica.capa : '/img/youmario.jpg' %>" alt="<%= musica.titulo %>">
+                    </button>
+                    <div class="track-info">
+                        <h3><%= musica.titulo %></h3>
+                        <p><%= musica.artista || 'Youmario' %></p>
+                    </div>
+                    <div class="track-meta">
+                        <strong><%= musica.genero || 'MP3' %></strong>
+                        <span><%= musica.downloads || 0 %> downloads</span>
+                    </div>
+                    <a class="download-btn" href="/download/<%= musica.id %>" download>Download</a>
+                </article>
+            <% }) %>
+        </div>
+    </section>
+
+    <section class="content-section" id="youtube">
+        <div class="section-head">
+            <h2><span>▶</span> Videos</h2>
+            <a href="#inicio">Pesquisar</a>
+        </div>
+        <div class="video-grid" id="youtube-results">
+            <div class="empty-state">
+                <h3>Pesquise um videoclipe</h3>
+                <p>Os resultados do YouTube aparecem aqui com miniatura, player, conversao MP3 e download.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="content-section" id="top">
+        <div class="section-head">
+            <h2><span>▥</span> Top Charts</h2>
+        </div>
+
+        <div class="chart-box">
+            <%
+            const topMusicas = [...musicas]
+                .sort((a, b) => (b.downloads || 0) - (a.downloads || 0))
+                .slice(0, 6);
+            %>
+            <% topMusicas.forEach((musica, index) => { %>
+                <button class="chart-item play-chart" type="button"
+                    data-title="<%= musica.titulo %>"
+                    data-artist="<%= musica.artista %>"
+                    data-audio="/uploads/musicas/<%= musica.ficheiro %>">
+                    <span><%= index + 1 %></span>
+                    <div>
+                        <strong><%= musica.titulo %></strong>
+                        <small><%= musica.artista || 'Youmario' %></small>
+                    </div>
+                    <em>≋</em>
+                </button>
+            <% }) %>
+        </div>
+    </section>
+</main>
+
+<footer class="footer" id="footer">
+    <div>
+        <a class="brand" href="/">
+            <span class="brand-icon">♪</span>
+            <span>
+                <strong>Youmario</strong>
+                <small>Music</small>
+            </span>
+        </a>
+        <p>A sua plataforma de musicas e videos com download, player e pesquisa integrada.</p>
+    </div>
+    <div>
+        <h3>Navegacao</h3>
+        <a href="#inicio">Inicio</a>
+        <a href="#biblioteca">Musicas</a>
+        <a href="#youtube">Videos</a>
+        <a href="#top">Top Charts</a>
+    </div>
+    <div>
+        <h3>Suporte</h3>
+        <a href="/admin/login">Admin</a>
+        <a href="#inicio">Pesquisa</a>
+        <a href="#youtube">Conversao MP3</a>
+    </div>
+</footer>
+
+<div class="player-bar">
+    <div>
+        <strong id="player-title">Nenhuma musica selecionada</strong>
+        <span id="player-artist">Escolhe uma musica da biblioteca.</span>
+    </div>
+    <audio id="global-player" controls></audio>
+</div>
+
+<script>
+const librarySearch = document.getElementById('library-search');
+const player = document.getElementById('global-player');
+const playerTitle = document.getElementById('player-title');
+const playerArtist = document.getElementById('player-artist');
+const genreChips = document.querySelectorAll('#genre-chips button');
+
+function applyLibraryFilters() {
+    const text = librarySearch.value.toLowerCase();
+    const activeGenre = document.querySelector('#genre-chips button.active')?.dataset.filter || 'todos';
+
+    document.querySelectorAll('.track-row').forEach((row) => {
+        const matchesText = row.innerText.toLowerCase().includes(text);
+        const matchesGenre = activeGenre === 'todos' || row.dataset.genre === activeGenre;
+        row.hidden = !(matchesText && matchesGenre);
+    });
+}
+
+function playAudio(title, artist, audio) {
+    player.src = audio;
+    playerTitle.textContent = title;
+    playerArtist.textContent = artist || 'Youmario';
+    player.play();
+}
+
+librarySearch.addEventListener('input', applyLibraryFilters);
+
+genreChips.forEach((chip) => {
+    chip.addEventListener('click', () => {
+        genreChips.forEach((item) => item.classList.remove('active'));
+        chip.classList.add('active');
+        applyLibraryFilters();
+    });
+});
+
+document.querySelectorAll('.track-row').forEach((row) => {
+    row.querySelector('.play-btn').addEventListener('click', () => {
+        playAudio(row.dataset.title, row.dataset.artist, row.dataset.audio);
+    });
+});
+
+document.querySelectorAll('.play-chart').forEach((item) => {
+    item.addEventListener('click', () => {
+        playAudio(item.dataset.title, item.dataset.artist, item.dataset.audio);
+    });
+});
+
+const youtubeForm = document.getElementById('youtube-form');
+const youtubeQuery = document.getElementById('youtube-query');
+const youtubeStatus = document.getElementById('youtube-status');
+const youtubeResults = document.getElementById('youtube-results');
+
+function setYoutubeStatus(message, error = false) {
+    youtubeStatus.textContent = message;
+    youtubeStatus.classList.toggle('error', error);
+}
+
+function renderYoutubeResults(items) {
+    youtubeResults.innerHTML = '';
+
+    if (!items.length) {
+        setYoutubeStatus('Nenhum resultado encontrado.');
+        youtubeResults.innerHTML = '<div class="empty-state"><h3>Nenhum video encontrado</h3><p>Tente outro nome, artista ou link.</p></div>';
+        return;
+    }
+
+    setYoutubeStatus(`${items.length} resultado(s) encontrado(s).`);
+
+    items.forEach((item) => {
+        const card = document.createElement('article');
+        card.className = 'video-card';
+        card.innerHTML = `
+            <div class="video-preview">
+                <button class="preview-button" type="button" aria-label="Reproduzir videoclip">
+                    <img src="${item.thumbnail}" alt="">
+                    <span>Play</span>
+                </button>
+            </div>
+            <div class="video-body">
+                <h3></h3>
+                <p></p>
+                <a href="${item.url}" target="_blank" rel="noreferrer">Abrir no YouTube</a>
+            </div>
+            <div class="video-actions">
+                <button class="download-btn convert-btn" type="button">Converter MP3</button>
+                <a class="download-btn alt" hidden>Download</a>
+            </div>
+        `;
+
+        card.querySelector('h3').textContent = item.titulo;
+        card.querySelector('p').textContent = `${item.canal}${item.duracao ? ' - ' + item.duracao : ''}`;
+
+        const convertButton = card.querySelector('.convert-btn');
+        const previewButton = card.querySelector('.preview-button');
+        const preview = card.querySelector('.video-preview');
+        const download = card.querySelector('.video-actions a');
+
+        previewButton.addEventListener('click', () => {
+            preview.innerHTML = `
+                <iframe
+                    src="https://www.youtube.com/embed/${item.id}?autoplay=1"
+                    title="${item.titulo.replace(/"/g, '&quot;')}"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen>
+                </iframe>
+            `;
+        });
+
+        convertButton.addEventListener('click', async () => {
+            convertButton.disabled = true;
+            convertButton.textContent = 'Convertendo...';
+            download.hidden = true;
+            setYoutubeStatus('A converter para MP3...');
+
+            try {
+                const res = await fetch('/youtube/download', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ id: item.id, titulo: item.titulo })
+                });
+                const data = await res.json();
+
+                if (!res.ok || !data.sucesso) {
+                    throw new Error(data.mensagem || 'Falha ao converter.');
+                }
+
+                download.href = data.url;
+                download.download = data.ficheiro;
+                download.hidden = false;
+                convertButton.textContent = 'Converter novamente';
+                setYoutubeStatus('MP3 pronto para download.');
+            } catch (error) {
+                setYoutubeStatus(error.message, true);
+                convertButton.textContent = 'Tentar novamente';
+            } finally {
+                convertButton.disabled = false;
+            }
+        });
+
+        youtubeResults.appendChild(card);
+    });
+
+    document.getElementById('youtube').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+youtubeForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const query = youtubeQuery.value.trim();
+
+    if (!query) return;
+
+    youtubeResults.innerHTML = '';
+    setYoutubeStatus('Pesquisando no YouTube...');
+
+    try {
+        const res = await fetch('/youtube/search?q=' + encodeURIComponent(query));
+        const data = await res.json();
+
+        if (!res.ok || !data.sucesso) {
+            throw new Error(data.mensagem || 'Falha ao pesquisar.');
+        }
+
+        renderYoutubeResults(data.resultados || []);
+    } catch (error) {
+        setYoutubeStatus(error.message, true);
+    }
+});
+</script>
+
+</body>
+</html>

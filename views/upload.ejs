@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Adicionar Musica - Youmario Music</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="auth-page">
+<form class="form-card" action="/admin/upload" method="POST" enctype="multipart/form-data">
+    <p class="eyebrow">Nova musica</p>
+    <h1>Adicionar Musica</h1>
+    <% if (erro) { %>
+        <div class="error-box"><%= erro %></div>
+    <% } %>
+    <label>
+        Titulo
+        <input type="text" name="titulo" required>
+    </label>
+    <label>
+        Artista
+        <input type="text" name="artista">
+    </label>
+    <label>
+        Genero
+        <input type="text" name="genero">
+    </label>
+    <label>
+        Descricao
+        <textarea name="descricao"></textarea>
+    </label>
+    <label>
+        Capa
+        <input type="file" name="capa" accept="image/*">
+    </label>
+    <label>
+        Musica MP3
+        <input type="file" name="musica" accept=".mp3,audio/mpeg" required>
+    </label>
+    <div class="hero-actions">
+        <button class="btn primary" type="submit">Guardar</button>
+        <a class="btn ghost" href="/admin/dashboard">Voltar</a>
+    </div>
+</form>
+</body>
+</html>

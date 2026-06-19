@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login Admin - Youmario Music</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="auth-page">
+<form class="form-card" method="POST" action="/admin/login">
+    <h1>Login Admin</h1>
+    <% if (erro) { %>
+        <div class="error-box"><%= erro %></div>
+    <% } %>
+    <label>
+        Utilizador
+        <input type="text" name="username" required>
+    </label>
+    <label>
+        Senha
+        <input type="password" name="password" required>
+    </label>
+    <button class="btn primary" type="submit">Entrar</button>
+</form>
+</body>
+</html>

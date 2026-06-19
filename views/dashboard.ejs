@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel - Youmario Music</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body class="auth-page">
+<div class="admin-card">
+    <p class="eyebrow">Painel Admin</p>
+    <h1>Ola, <%= admin.username %></h1>
+    <div class="hero-actions">
+        <a class="btn primary" href="/admin/upload">Adicionar musica</a>
+        <a class="btn ghost" href="/">Ver site</a>
+        <form method="POST" action="/admin/logout">
+            <button class="btn ghost" type="submit">Sair</button>
+        </form>
+    </div>
+</div>
+</body>
+</html>
